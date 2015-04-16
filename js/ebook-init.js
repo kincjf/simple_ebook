@@ -14,19 +14,47 @@ var scaleContentToDevice = function () {
         textVisible: true
     });
 
-    var wrapHeight = $.mobile.getScreenHeight() - $(".ui-header").outerHeight() - $(".ui-footer").outerHeight() - $(".ui-content").outerHeight() + $(".ui-content").height();
-    var wrap = $(".ui-content").height(wrapHeight);
+    var FACTOR = 0.95;
+
+    var screenHeight = $.mobile.getScreenHeight() - $(".ui-header").outerHeight() - $(".ui-footer").outerHeight() - $(".ui-content").outerHeight() + $(".ui-content").height();
+    var wrap = $(".ui-content").height(screenHeight);
     var wrapWidth = wrap.width();
     var wrapHeight = wrap.height();
 
-    var bookImage = $(".book-image").height(wrapHeight * 0.95);
-    var bookImageWidth = bookImage.outerWidth();
+    var bookImage = $(".book-image").css({
+    });
+    var bookImageNaturalWidth = bookImage[0].naturalWidth;
+    var bookImageNaturalHeight = bookImage[0].naturalHeight;
 
-    if (wrapWidth > bookImageWidth * 2) {
+    if(wrapWidth >  bookImageNaturalWidth) {    // 이미지 가로크기가 화면보다 작은 경우
+        if(wrapHeight > bookImageNaturalHeight) {       // 이미지 세로크기가 화면보다 더 작은 경우 - 4
+            // 확대해도 되고, 안해도됨
+        } else {        // 이미지 세로크기가 화면보다 더 큰 경우 - 2
+            bookImage.height(wrapHeight * FACTOR);
+        }
+    } else {        // 이미지 가로크기가 화면보다 더 큰 경우
+        if(wrapHeight > bookImageNaturalHeight) {       // 이미지 세로크기가 화면보다 작은 경우 - 3
+            bookImage.width(wrapWidth * FACTOR);
+        } else {        // 이미지 세로크기가 화면보다 더 큰 경우 - 1
+            if((wrapWidth - bookImageNaturalWidth) > (wrapHeight - bookImageNaturalHeight)) {        // 화면보다 이미지가 더 큰 경우
+                // 가로 차이가 더 적은경우 - 세로를 줄임
+                bookImage.height(wrapHeight * FACTOR);
+            } else {
+                // 세로 차이가 더 적은경우 - 가로를 줄임
+                bookImage.width(wrapWidth * FACTOR);
+            }
+        }
+    }
+
+    var bookImageWidth = bookImage.width();
+
+    if (wrapWidth > 900) {
         gallerySwiper.params.slidesPerView = 2;
     } else {
         gallerySwiper.params.slidesPerView = 1;
     }
+
+    gallerySwiper.onResize();
 
     $.mobile.loading("hide");
 }
