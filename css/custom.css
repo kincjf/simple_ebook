@@ -1,0 +1,23 @@
+body {
+    overflow-y:hidden;
+}
+
+.ui-content {
+    height: 100%;
+}
+
+.book-image {
+    height: 100%;
+}
+
+.swiper-slide {
+    text-align: center;
+}
+
+#contents {
+  margin: 0 50px;
+}
+
+.index {
+    margin: 0 20px !important;
+}
