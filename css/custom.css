@@ -2,6 +2,10 @@ body {
     overflow-y:hidden;
 }
 
+ul {
+    list-style: none;
+}
+
 .ui-content {
     height: 100%;
 }
@@ -16,7 +20,7 @@ body {
 }
 
 #contents {
-  margin: 0 50px;
+    margin: 0 50px;
 }
 
 .index {
